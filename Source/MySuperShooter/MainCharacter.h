@@ -8,6 +8,7 @@
 class UCameraComponent;
 class UInputAction;
 struct FInputActionValue;
+class USphereComponent;
 
 UCLASS()
 class MYSUPERSHOOTER_API AMainCharacter : public ACharacter
@@ -57,6 +58,10 @@ protected:
 	virtual void BeginPlay() override;
 
 public:	
+
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Utility")
+	USphereComponent* DetectionSphere;
+
 	// Called every frame
 	virtual void Tick(float DeltaTime) override;
 

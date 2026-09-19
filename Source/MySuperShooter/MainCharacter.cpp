@@ -4,6 +4,7 @@
 #include "EnhancedInputComponent.h"
 #include "InputActionValue.h"
 #include "GameFramework/CharacterMovementComponent.h"
+#include "Components/SphereComponent.h"
 
 AMainCharacter::AMainCharacter()
 {
@@ -11,6 +12,9 @@ AMainCharacter::AMainCharacter()
 
 	FirstPersonCameraComponent = CreateDefaultSubobject<UCameraComponent>(TEXT("First Person Camera"));
 	FirstPersonCameraComponent->SetupAttachment(RootComponent);
+
+	DetectionSphere = CreateDefaultSubobject<USphereComponent>(TEXT("DetectionSphere"));
+	DetectionSphere->SetupAttachment(FirstPersonCameraComponent);
 }
 
 void AMainCharacter::BeginPlay()

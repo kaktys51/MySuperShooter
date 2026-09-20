@@ -29,6 +29,55 @@ void AMainCharacter::Tick(float DeltaTime)
 
 }
 
+
+
+void AMainCharacter::StartInteractableTrace()
+{
+	FTimerManager& TM = GetWorldTimerManager();
+	if (!TM.IsTimerActive(InteractableTraceTimerHandle))
+	{
+		TM.SetTimer(InteractableTraceTimerHandle, 
+			this,
+			&AMainCharacter::InteractableTraceTick,
+			1.f / InteractionTraceRate, 
+			true);
+		if (GEngine)
+			GEngine->AddOnScreenDebugMessage(-1, 15.0f, FColor::Yellow, TEXT("Timer Started"));
+	}
+	
+}
+
+void AMainCharacter::StopInteractableTrace()
+{
+	GetWorldTimerManager().ClearTimer(InteractableTraceTimerHandle);
+	if (GEngine)
+		GEngine->AddOnScreenDebugMessage(-1, 15.0f, FColor::Red, TEXT("Timer Stoped"));
+}
+
+void AMainCharacter::InteractableTraceTick()
+{
+	LineTraceForInteractable();
+}
+
+FHitResult AMainCharacter::LineTraceForInteractable()
+{
+	FHitResult Hit;
+	FVector Start = FirstPersonCameraComponent->GetComponentLocation();
+	FVector End = Start + FirstPersonCameraComponent->GetForwardVector() * InteractableLineTraceLenght;
+
+	FCollisionQueryParams QueryParams;
+	QueryParams.AddIgnoredActor(this);
+
+	bool bHit = GetWorld()->LineTraceSingleByChannel(Hit, Start, End, ECC_InteractableTrace, QueryParams);
+
+	DrawDebugLine(GetWorld(), Start, End, FColor::Red, false, 0.4f, 0, 0.05f);
+	if (bHit)
+	{
+		DrawDebugPoint(GetWorld(), Hit.ImpactPoint, 12.0f, FColor::Yellow, false, 2.f);
+	}
+	return Hit;
+}
+
 void AMainCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInputComponent)
 {
 	Super::SetupPlayerInputComponent(PlayerInputComponent);

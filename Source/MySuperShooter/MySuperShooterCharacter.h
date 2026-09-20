@@ -5,6 +5,7 @@
 #include "CoreMinimal.h"
 #include "GameFramework/Character.h"
 #include "Logging/LogMacros.h"
+#include "PickUpInterface.h"
 #include "MySuperShooterCharacter.generated.h"
 
 class UInputComponent;
@@ -19,7 +20,7 @@ DECLARE_LOG_CATEGORY_EXTERN(LogTemplateCharacter, Log, All);
  *  A basic first person character
  */
 UCLASS(abstract)
-class AMySuperShooterCharacter : public ACharacter
+class AMySuperShooterCharacter : public ACharacter, public IPickUpInterface
 {
 	GENERATED_BODY()
 
